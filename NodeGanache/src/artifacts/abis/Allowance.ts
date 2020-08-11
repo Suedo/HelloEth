@@ -1,4 +1,5 @@
-export const Allowance = [
+import { AbiItem } from "web3-utils";
+export const Allowance: AbiItem[] = [
   {
     anonymous: false,
     inputs: [
