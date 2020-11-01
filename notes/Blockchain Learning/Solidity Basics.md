@@ -4,7 +4,7 @@ Starting off with what I am learning from this Udemy course. Most tutorials are 
 
 [Code with Ethereum & Solidity: The Complete Developer Guide](https://www.udemy.com/course/ethereum-and-solidity-the-complete-developers-guide/)
 
-## Constructor
+### Constructor
 
 this block gets executed when we are deploying the code to the blockchain. Only one constructor is allowed, thus no overloading.
 
@@ -14,17 +14,17 @@ constructor() public {
 }
 ```
 
-## Keywords/concepts to check:
+### Keywords/concepts to check:
 
 view, payable, public, enum, mapping, returns (in method signature), transfer, msg.sender, msg.value, ownership, transfer ownership, require, assert, "modifier" being used to generate checks which can be added to method signature, events, receive function, why receive functions needs to be marked external, Inheritance, Factories, Smart Contract Interactions, 
 
-## Pure functions vs View Functions
+### Pure functions vs View Functions
 
-Functions declared as a [`view`](https://solidity.readthedocs.io/en/v0.7.4/contracts.html?#view-functions) promise not to modify the state of the contract. Whereas Functions declared as [`pure`](https://solidity.readthedocs.io/en/v0.7.4/contracts.html?#pure-functions) promise not to modify the state, nor read the state of a contract. 
+Functions declared as a `[view](https://solidity.readthedocs.io/en/v0.7.4/contracts.html?#view-functions)` promise not to modify the state of the contract. Whereas Functions declared as `[pure](https://solidity.readthedocs.io/en/v0.7.4/contracts.html?#pure-functions)` promise not to modify the state, nor read the state of a contract. 
 
 Note: If the compiler’s EVM target is Byzantium or newer (default) the opcode `STATICCALL` is used, which does not guarantee that the state is not read, but at least that it is not modified.
 
-## Fallback & Receive Functions
+### Fallback & Receive Functions
 
 The `fallback` function always receives **data**, but in order to also receive **Ether** it must be marked **payable**. A contract can have **at most one** fallback function, declared using `fallback () external [payable]` (without the function keyword). Similarly, the `receive` function is declared using `receive() external payable { ... }`
 
@@ -39,7 +39,7 @@ Neither the `fallback` nor `receive` function can have arguments, they cannot re
 
 More details: [Fallback function](https://solidity.readthedocs.io/en/v0.7.4/contracts.html?#fallback-function), [Receive function](https://solidity.readthedocs.io/en/v0.7.4/contracts.html?#receive-ether-function)
 
-## Constant & Immutable
+### Constant & Immutable
 
 State variables can be declared as constant or immutable. In both cases, the variables cannot be modified after the contract has been constructed. For constant variables, the value has to be fixed at compile-time, while for immutable, it can still be assigned at construction time. The compiler does not reserve a storage slot for these variables, and every occurrence in code is replaced by the respective value, either at compile time or runtime, making the gas costs of constant and immutable variables much lower. 
 
@@ -62,7 +62,7 @@ contract C {
 }
 ```
 
-## Function Modifiers
+### Function Modifiers
 
 Modifiers can be used to change the behavior of functions in a declarative way. Modifiers are inheritable properties of contracts and may be overridden by derived contracts, but only if they are marked `virtual`. More details [here](https://solidity.readthedocs.io/en/v0.7.4/contracts.html?#function-modifiers).
 
@@ -96,7 +96,7 @@ contract destructible is owned {
 }
 ```
 
-## Return Values
+### Return Values
 
 Solidity programs can return multiple values. Also, the return signature on the method has names of variables. We can directly assign to these named variables, and skip the `return` keyword inside the function body, or, be more traditional like other languages, and have a `return` statement that matches the signature of the function, without paying much heed to the names of the variables in the method's return signature. Below are two methods of returning as described:
 

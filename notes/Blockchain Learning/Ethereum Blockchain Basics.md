@@ -14,18 +14,18 @@ A contract account has balance, storage and code. Balance indicates amount of et
 
 An External account is a consumer account, with an address, a private and public key. It is created via things like metamask, mist browser etc. It exists as an independent entity, and can the same external account can be used with any network (Ropsten, Kovan etc)
 
-![Ethereum%20Blockchain%20Basics%20ecdf341d9797472baeca9c0c2fd73914/Untitled.png](Ethereum%20Blockchain%20Basics%20ecdf341d9797472baeca9c0c2fd73914/Untitled.png)
+![Ethereum%20Blockchain%20Basics/Untitled.png](Ethereum%20Blockchain%20Basics/Untitled.png)
 
 Multiple Instances can be deployed from the same smart contract source code into a network, much like multiple instances can be created from a class in an OOP language. 
 
 ### Anatomy of a Transaction in the Ethereum Network
 
-![Ethereum%20Blockchain%20Basics%20ecdf341d9797472baeca9c0c2fd73914/Untitled%201.png](Ethereum%20Blockchain%20Basics%20ecdf341d9797472baeca9c0c2fd73914/Untitled%201.png)
+![Ethereum%20Blockchain%20Basics/Untitled%201.png](Ethereum%20Blockchain%20Basics/Untitled%201.png)
 
 ### Solidity, ABI and Solidity ByteCode
 
 We will write our contracts in solidity, and the compiler will generate the ABI and bytecode from it. The ABI is like an API for interacting with the bytecode. This lets us communicate with the smart contract using our language of choice, like java, js, go etc. 
 
-![Ethereum%20Blockchain%20Basics%20ecdf341d9797472baeca9c0c2fd73914/Untitled%202.png](Ethereum%20Blockchain%20Basics%20ecdf341d9797472baeca9c0c2fd73914/Untitled%202.png)
+![Ethereum%20Blockchain%20Basics/Untitled%202.png](Ethereum%20Blockchain%20Basics/Untitled%202.png)
 
-![Ethereum%20Blockchain%20Basics%20ecdf341d9797472baeca9c0c2fd73914/Untitled%203.png](Ethereum%20Blockchain%20Basics%20ecdf341d9797472baeca9c0c2fd73914/Untitled%203.png)
+![Ethereum%20Blockchain%20Basics/Untitled%203.png](Ethereum%20Blockchain%20Basics/Untitled%203.png)
