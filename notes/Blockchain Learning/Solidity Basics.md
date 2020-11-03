@@ -14,6 +14,28 @@ constructor() public {
 }
 ```
 
+### Default values of variables
+
+All values are initialized by default. There is no null or undefined etc. Defaults:
+
+```jsx
+uint = 0;
+int = 0;
+bool = false;
+string = ""; // empty string
+```
+
+`public` variables generate a `getter` with the same name of the variable. You can't create a function with the same name as the variable yourself.
+
+### Integer Wrap Around
+
+```jsx
+uint8 myUint8 = 0;
+myUnint8--; // this becomes 255!!
+```
+
+`uint` are not signed, so, decrementing 0 results in wrap around to 255 instead of -1
+
 ### Keywords/concepts to check:
 
 view, payable, public, enum, mapping, returns (in method signature), transfer, msg.sender, msg.value, ownership, transfer ownership, require, assert, "modifier" being used to generate checks which can be added to method signature, events, receive function, why receive functions needs to be marked external, Inheritance, Factories, Smart Contract Interactions, 
@@ -120,3 +142,19 @@ contract Simple {
     }
 }
 ```
+
+### Funds Transfer
+
+```jsx
+/* checking balance */
+address addr = msg.sender; // an address, here, the one who invoked the call
+uint accountBalance = addr.balance; // amount of wei in the account
+address(this).balance; // another way to get balance of current account
+
+/* funds transfer */
+addr2 = ... // some address to transfer to
+addr2.transfer(1000); // 1000 wei, method 1, recommended
+bool success = addr2.send(1000); // 1000 wei, method 2, bad way
+```
+
+`address.transfer` method is safer, as it refunds the source if the transfer fails. `address.send` just returns false if fails. Always better to use `transfer` than send. More details, and better solutions than either of these, mentioned [here](https://solidity.readthedocs.io/en/latest/types.html?#members-of-addresses)
