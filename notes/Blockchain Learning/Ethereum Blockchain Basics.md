@@ -29,3 +29,99 @@ We will write our contracts in solidity, and the compiler will generate the ABI 
 ![Ethereum%20Blockchain%20Basics/Untitled%202.png](Ethereum%20Blockchain%20Basics/Untitled%202.png)
 
 ![Ethereum%20Blockchain%20Basics/Untitled%203.png](Ethereum%20Blockchain%20Basics/Untitled%203.png)
+
+source of below three blocks: [EEG video](https://www.youtube.com/watch?v=VH0obZ2A0Yg&t=2402s)
+
+## Ethereum Core: Concepts
+
+### Block processing layers
+
+```bash
+1. Block Processor 
+2. 	Block Validator
+3. 		Tx Processor 
+4. 			Bytecode Executor 
+5. 				EVM
+```
+
+### Ethereum Storage basics
+
+Global state data is **primarily stored as Patricia Merkle Tries (PMT) of RLP encoded data**, although in some cases (?) simpler key-value dbs like LevelDB are also used. So what is PMT, RLP ? below:
+
+**RLP** is the main encoding method used to serialize objects in Ethereum. The only purpose of RLP is to encode structure. Encoding specific data types (eg. strings, floats) is left up to higher-order protocols. More details in [wiki](https://eth.wiki/en/fundamentals/rlp) page.
+
+**Patricia Merkle Tries (**[eth wiki](https://eth.wiki/en/fundamentals/patricia-tree)**)**
+
+1. Provide a cryptographically authenticated data structure that can be used to store all (key, value) bindings, 
+2. Are fully deterministic, i.e. that Patricia tries with the same (key,value) bindings are guaranteed to be exactly the same down to the last byte and therefore have the same root hash
+3. Provide the holy grail of O(log(n)) efficiency for inserts, lookups and deletes
+4. Are much easier to understand and code than more complex comparison-based alternatives like red-black tries
+
+### Types of Ethereum Clients
+
+Light Node,  Full Node,  Full Archive Node,  Mine Pool Lead
+
+**Light Node:** possibly: full json rpc, no consensus with other clients, no storage (maybe cache), defer blocks to networking layer
+
+**Full Node: `Light Node` +** Verifies incoming blocks, has storage and maintains current world state, probably no consensus
+
+**Full Archive Node: `Full Node` +** Maintains current world state as well as full world state history, thus has much more storage than a full node.
+
+**Mining Pool Lead: `Full Archive Node` +** Maintains consensus. It takes transaction from the pool, pushes it through the block processor, generates a candidate block, pushes it through the consensus mechanism and once verified, broadcasts the block through the eth network. 
+
+### Main Operations with Ethereum clients/nodes
+
+1. Query state of a node on the network
+2. Get state of an Ethereum network (as the node sees it)
+3. Send transaction, deploy contracts
+4. Manage account via managing private keys
+
+## Web3 and Ethereum
+
+### Steps to create a web3 instance
+
+```jsx
+let Web3 = require("web3")  // 1. Import web3 module
+let web3i = new Web3()      // 2. Create an instance of the module
+web3i.setProvider(          // 3. set the provider
+  new web3i.providers.HttpProvider(
+    "http://localhost:8545"     // url of eth client
+  )
+)
+```
+
+### How a contract is deployed through web3 api
+
+We create a web3 contract from the abi, and then use web3's deploy and send methods to deploy it to the Ethereum network
+
+```jsx
+let MyContract = new web3.net.contract(myContractAbi);
+let contractDataObject = {
+  data: bytecode
+}
+let instance = await MyContract
+  .deploy(contractDataObject)
+  .send({
+    from: "0x...",  // account from which ether/gas will be used to create the contract
+    gas: 150000     // maximum amount of gas
+  })
+```
+
+### Steps to access a contract instance
+
+1. Get the abi of the contract. Mostly this will be in json format.
+2. Get the contract address ( generally a hex number)
+3. Create a new contract instance using the abi and contract address with the previously created web3 instance
+
+```jsx
+let abi = readJsonFile("contractAbi.json")
+let contractAddress = "0x..."
+let contract = new web3.eth.Contract( abi, contractAddress )
+```
+
+### How the contract instance works/flows:
+
+1. We call a method on the contract, returns a promise immediately
+2. The contract sends an http request containing our method call to the Ethereum client
+3. The Ethereum client will create a transaction, sign it with our private key, and send it to the Ethereum network for execution.
+4. When the client gets a reply from the network, it will reply to the contract, and our promise will resolve
