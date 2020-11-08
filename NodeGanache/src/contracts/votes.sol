@@ -13,7 +13,7 @@ contract Voter {
   mapping(address => bool) hasVoted;
   mapping(string => OptionPos) optionMap;
 
-  constructor(string[] memory _options) public {
+  constructor(string[] memory _options) {
     options = _options;
     votes = new uint256[](options.length);
 
