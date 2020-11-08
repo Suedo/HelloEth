@@ -15,7 +15,7 @@ contract("CrowdFundingWithDeadline", function (accounts) {
       beneficiary,
       {
         from: contractCreator,
-        gas: 200000, // max amount of gas
+        gas: 2000000, // max amount of gas
       }
     );
   });
