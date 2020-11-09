@@ -1,0 +1,19 @@
+{
+  "name": "helloTruffle",
+  "version": "1.0.0",
+  "description": "- The `contracts` folder contains `.sol` files. - The `migrations` folder help deploying the code to the blockchain. - The `test` folder has all the mocha/chai tests for our smart contracts. - The `build` folder has the compiled contract's json data, used for deploying",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prettier": "prettier --write **/*.sol"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "prettier-plugin-solidity": "^1.0.0-alpha.59"
+  }
+}
