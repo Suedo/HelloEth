@@ -3,7 +3,7 @@ pragma solidity ^0.7.4;
 pragma experimental ABIEncoderV2;
 
 contract CrowdFundingWithDeadline {
-  enum Status {Ongoing, Failed, Succeeded, PaidOut} // internally recorded as 0,1,2,3
+  enum Status { Ongoing, Failed, Succeeded, PaidOut } // internally recorded as 0,1,2,3
 
   string public name;
   uint256 public targetAmount;
