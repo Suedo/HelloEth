@@ -1,6 +1,7 @@
-const CrowdFunnding = artifacts.require("CrowdFundingWithDeadline");
+// const CrowdFunnding = artifacts.require("CrowdFundingWithDeadline");
+const CrowdFunnding = artifacts.require("./TestCrowdFunWithDeadline");
 
-contract("CrowdFundingWithDeadline", function (accounts) {
+contract("CrowdFundingWithDeadline", (accounts) => {
   let contract;
   let contractCreator = accounts[0];
   let beneficiary = accounts[1];
