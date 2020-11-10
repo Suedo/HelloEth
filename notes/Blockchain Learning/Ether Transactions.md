@@ -29,7 +29,7 @@ We need to [sign the transaction](https://web3js.readthedocs.io/en/v1.2.0/web3-e
 
 The Ethereum account is the Keccak Hash of the the last 20 bytes of the Public Key, which itself is generated from the Private key via [ECDSA](https://hackernoon.com/a-closer-look-at-ethereum-signatures-5784c14abecc). Thus, both the Eth account, and the public key, are functions of the private key. 
 
-![Ether%20Transactions/Untitled.png](Ether%20Transactions/Untitled.png)
+![Ether%20Transactions%20e18501e6ab7b4c848d4e4650d20823d7/Untitled.png](Ether%20Transactions%20e18501e6ab7b4c848d4e4650d20823d7/Untitled.png)
 
 Every outgoing txn is signed with the private key, to generate a Signed Transaction (STXN). This STXN contains the V, R and S cryptographic fields. These fields are complex stuff, and give the security and authenticity to the transaction (my understanding). Also, the R and S fields can be used to generate the Ethereum Account address via ECRECOVER. 
 
