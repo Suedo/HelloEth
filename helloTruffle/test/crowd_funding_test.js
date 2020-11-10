@@ -1,5 +1,5 @@
 // const CrowdFunnding = artifacts.require("CrowdFundingWithDeadline");
-const CrowdFunnding = artifacts.require("./TestCrowdFunWithDeadline");
+const CrowdFunding = artifacts.require("TestCrowdFunWithDeadline");
 
 contract("CrowdFundingWithDeadline", (accounts) => {
   let contract;
@@ -9,7 +9,8 @@ contract("CrowdFundingWithDeadline", (accounts) => {
   const ONE_ETH = 1000000000000000000;
 
   beforeEach(async function (params) {
-    contract = await CrowdFunnding.new(
+    console.log("In before each");
+    contract = await CrowdFunding.new(
       "funding",
       1, // fund amount
       10, // duration in mins

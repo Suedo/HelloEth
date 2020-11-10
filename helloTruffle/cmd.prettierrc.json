@@ -1,0 +1,10 @@
+{
+  "printWidth": 120,
+  "tabWidth": 2,
+  "useTabs": false,
+  "singleQuote": false,
+  "bracketSpacing": false,
+  "plugins": ["prettier-plugin-solidity"]
+}
+
+/* "plugins": ["prettier-plugin-solidity"]  is needed when you want to run prettier as an npm/cmdline script */
