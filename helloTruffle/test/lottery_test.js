@@ -38,4 +38,20 @@ contract("Lottery", (accounts) => {
     // ]
     assert.deepEqual([accounts[0], accounts[1]], players);
   });
+
+  it("should have accounts[0] as the owner", async () => {
+    const owner = await contract.owner();
+    assert.equal(accounts[0], owner);
+  });
+
+  it("should only allow owner to release the Lottery", async () => {
+    try {
+      await contract.throwDice().send({
+        from: accounts[1],
+      });
+      assert(false);
+    } catch (err) {
+      assert(err);
+    }
+  });
 });
