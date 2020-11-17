@@ -30,12 +30,13 @@ contract Lottery {
     emit Received(msg.sender, msg.value, totalAmount);
   }
 
-  function throwDice() external isOwner {
+  function throwDice() external isOwner returns (address payable) {
     uint256 winner = selectRandom();
     emit Winner(players[winner]);
     players[winner].transfer(totalAmount);
-    totalAmount = 0;
     emit Sent(address(this), players[winner], totalAmount);
+    totalAmount = 0;
+    return players[winner];
   }
 
   function getPlayers() public view returns (address payable[] memory) {

@@ -1,4 +1,5 @@
 const Lottery = artifacts.require("Lottery");
+const truffleAssert = require("truffle-assertions");
 
 contract("Lottery", (accounts) => {
   let contract;
@@ -68,12 +69,30 @@ contract("Lottery", (accounts) => {
     }
   });
 
+  // https://ethereum.stackexchange.com/a/63395/22522
   it("owner account is allowed release the Lottery", async () => {
-    try {
-      await contract.throwDice({from: accounts[0]});
-      assert(true);
-    } catch (err) {
-      assert(false);
-    }
+    const totalBefore = await contract.totalAmount();
+    const result = await contract.throwDice({from: accounts[0]});
+    const totalAfter = await contract.totalAmount();
+
+    assert.equal(totalBefore, web3.utils.toWei("0.2"));
+    assert.equal(totalAfter, web3.utils.toWei("0"));
+
+    // simple event test
+    truffleAssert.eventEmitted(result, "Winner");
+
+    // testing event contents
+    truffleAssert.eventEmitted(
+      result,
+      "Sent",
+      (ev) => {
+        // console.log("ev.amount: ", ev.amount);
+        return ev.amount.toString() === web3.utils.toWei("0.2");
+      },
+      "Contract should transfer amount to winner"
+    );
+
+    // console.log(accounts.includes(result)); // false, why?
+    // assert.equal(newTotal, 0); // this also works
   });
 });
