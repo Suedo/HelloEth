@@ -5,7 +5,6 @@ contract("Lottery", (accounts) => {
 
   beforeEach(async () => {
     contract = await Lottery.deployed();
-    console.log("Before Each ...");
   });
 
   it("should show one lottery entry", async () => {
@@ -29,6 +28,14 @@ contract("Lottery", (accounts) => {
     assert.equal(players.length, 2);
   });
 
+  it("lottery amount should reflect previous two entries", async () => {
+    const result = await contract.totalAmount();
+    // console.log("typeof result: ", typeof result, result);
+    // console.log("\ntypeof toWei: ", typeof web3.utils.toWei("0.2"), web3.utils.toWei("0.2"));
+    // https://ethereum.stackexchange.com/a/67094/22522
+    assert.equal(result, web3.utils.toWei("0.2"));
+  });
+
   it("should show the two entry addresses in order", async () => {
     const players = await contract.getPlayers();
     // console.log("players: ", players);
@@ -44,14 +51,29 @@ contract("Lottery", (accounts) => {
     assert.equal(accounts[0], owner);
   });
 
-  it("should only allow owner to release the Lottery", async () => {
+  it("non-owner account cannot release the Lottery", async () => {
+    /* Structure of catched error object originating from a `require` : 
+      {
+        "reason": "<String given in require()>",
+        "hijackedStack": "<callstack, including reason>"
+      } 
+    */
     try {
-      await contract.throwDice().send({
-        from: accounts[1],
-      });
+      await contract.throwDice({from: accounts[1]});
       assert(false);
     } catch (err) {
-      assert(err);
+      // console.log("\ncatching err JSON: ", JSON.stringify(err.reason, null, 2));
+      // assert(err); // just checked if err object was truthy
+      assert.equal(err.reason, "Must be owner to throw dice");
+    }
+  });
+
+  it("owner account is allowed release the Lottery", async () => {
+    try {
+      await contract.throwDice({from: accounts[0]});
+      assert(true);
+    } catch (err) {
+      assert(false);
     }
   });
 });
