@@ -71,6 +71,17 @@ myUnint8--; // this becomes 255!!
 
 view, payable, public, enum, mapping, returns (in method signature), transfer, msg.sender, msg.value, ownership, transfer ownership, require, assert, "modifier" being used to generate checks which can be added to method signature, events, receive function, why receive functions needs to be marked external, Inheritance, Factories, Smart Contract Interactions, 
 
+### Function Visibility
+
+Official docs: [here](https://docs.soliditylang.org/en/v0.7.4/contracts.html#visibility-and-getters)
+
+[Contracts - Solidity 0.7.4 documentation](https://docs.soliditylang.org/en/v0.7.4/contracts.html#visibility-and-getters)
+
+- `Public`: can be called internally & externally
+- `Private`: Only by the contract, not by derived or external contracts
+- `Internal`: By the contract itself, and child(/derived) contracts. Can't be invoked by transaction
+- `External`: Can be called from other contracts, transactions. Can't be called internally.
+
 ### Pure functions vs View Functions
 
 Functions declared as a `[view](https://solidity.readthedocs.io/en/v0.7.4/contracts.html?#view-functions)` promise not to modify the state of the contract. Whereas Functions declared as `[pure](https://solidity.readthedocs.io/en/v0.7.4/contracts.html?#pure-functions)` promise not to modify the state, nor read the state of a contract. 
@@ -95,6 +106,23 @@ Neither the `fallback` nor `receive` function can have arguments, they cannot re
     2. on plain Ether transfers (e.g. via `.send()` or `.transfer()`). If no such function exists, but a `payable` `fallback` function exists, the fallback function will be called on a plain Ether transfer.
 
 More details: [Fallback function](https://solidity.readthedocs.io/en/v0.7.4/contracts.html?#fallback-function), [Receive function](https://solidity.readthedocs.io/en/v0.7.4/contracts.html?#receive-ether-function)
+
+### Assert Vs Require
+
+- Revert operation (0xfd) for require. Returns Remaining gas. Used to validate user input
+- Invalid operation (0xfe) for assert. Consumes all gas. Used to validate invariants.
+
+Assert should only be triggered if something totally unexpected happens in your contract. Like a mismatch checksum, funds missing, index out of bounds etc... very bad stuff basically. Require on the other hand is suitable when you can allow a retry, as is the case with user input. Require also allows to send an error message, which Assert does not. 
+
+Require and Revert both do the same thing:
+
+```jsx
+if (amount > msg.value / 2 ether) {
+  revert("Not enough ether provided");
+}
+// is similar to
+require(amount > msg.value / 2 ether, "Not enough ether provided");
+```
 
 ### Constant & Immutable
 

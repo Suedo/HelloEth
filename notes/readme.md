@@ -21,3 +21,5 @@ Joining JPMC in less than a month. Putting my Ethereum research into here
 [Solidity Handson](Blockchain%20Learning/Solidity%20Handson.md)
 
 [Ether Transactions](Blockchain%20Learning/Ether%20Transactions.md)
+
+[Testing smart contracts](Blockchain%20Learning/Testing%20smart%20contracts.md)
