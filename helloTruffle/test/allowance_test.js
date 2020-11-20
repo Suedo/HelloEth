@@ -136,4 +136,24 @@ contract("Allowance", (accounts) => {
       assert(false);
     }
   });
+
+  it("should transfer fund properly when giving allowance", async () => {
+    const transferAmount = web3.utils.toWei("0.3");
+    const result = await contract.giveAllowanceMoney(kid1, transferAmount);
+    const newOwnerBalance = await contract.getBalance();
+    const newKidBalance = await contract.getBalance({from: kid1});
+
+    assert.equal(newKidBalance, transferAmount);
+    assert.equal(newOwnerBalance, web3.utils.toWei("0.7")); // owner balance 1 ether initially
+    truffleAssert.eventEmitted(result, "AllowanceChange", (ev) => ev.currentBalance.toString() === transferAmount);
+  });
+
+  it("allowance should be withdrawable", async () => {
+    // kid1 got 0.3 ether as allowance in last test, lets try to withdraw some of it
+    const amt = web3.utils.toWei("0.1");
+    const result = await contract.withdraw(amt, {from: kid1});
+    const newKidBalance = await contract.getBalance({from: kid1});
+    assert.equal(newKidBalance, web3.utils.toWei("0.2")); // .3 - .1 = .2
+    truffleAssert.eventEmitted(result, "Transfer");
+  });
 });
