@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract Allowance is ReentrancyGuard, Ownable {
   mapping(address => uint256) allowance;
   mapping(address => uint256) balanceOf;
-  enum ChangeType {Increase, Decrease}
+  enum ChangeType {None, Increase, Decrease}
 
   event Received(address recipient, address from, uint256 amount, uint256 total); // print details for received amount
   event Transfer(address from, address to, uint256 amount); // print details regarding amount transferred
@@ -23,6 +23,10 @@ contract Allowance is ReentrancyGuard, Ownable {
 
   function getBalance() external view returns (uint256) {
     return balanceOf[msg.sender];
+  }
+
+  function getAllowance(address user) external view returns (uint256) {
+    return allowance[user];
   }
 
   function changeAllowanceLimit(

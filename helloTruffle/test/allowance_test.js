@@ -12,6 +12,11 @@ contract("Allowance", (accounts) => {
   const kid2 = accounts[2];
   const kid3 = accounts[3];
 
+  // enum ChangeType of Contract
+  const none = 0;
+  const increase = 1;
+  const decrease = 2;
+
   beforeEach(async () => {
     contract = await Allowance.deployed();
     owner = await contract.owner();
@@ -64,6 +69,71 @@ contract("Allowance", (accounts) => {
       assert(false);
     } catch (err) {
       assert.equal(err.reason, "Ownable: caller is not the owner");
+    }
+  });
+
+  it("should set allowance limits to non-zero: method 1", async () => {
+    try {
+      const value = web3.utils.toWei("0.2");
+      // https://ethereum.stackexchange.com/a/90342/22522
+      const newLimit = await contract.changeAllowanceLimit.call(kid1, value, none);
+      assert.equal(value, newLimit);
+    } catch (err) {
+      console.log("error:\n", err);
+      assert(false);
+    }
+  });
+
+  it(".call does not persist state change", async () => {
+    /*
+    in the previous test, titled:
+    it("should set allowance limits to non-zero"...)
+    we used `contract.setAllowance.call` 
+    while that changes the state inside the method, those changes did not persist in the contract
+    as a result, now, when we check the allowance, it will not have updated
+    */
+
+    const allowance = await contract.getAllowance(kid1);
+    assert.equal(allowance, 0);
+  });
+
+  it("should PERSIST allowance limit change to non-zero", async () => {
+    try {
+      const value = web3.utils.toWei("0.2");
+      const newLimit = await contract.changeAllowanceLimit(kid1, value, none);
+      // we do not get return value, only TX object
+      // thus we must assert events
+      truffleAssert.eventEmitted(
+        newLimit,
+        "AllowanceLimitChange",
+        (ev) => ev.newLimit.toString() === value,
+        "AllowanceLimitChange event should be triggered"
+      );
+      const newAllowance = await contract.getAllowance(kid1);
+      assert.equal(newAllowance, value);
+    } catch (err) {
+      console.log("error:\n", err);
+      assert(false);
+    }
+  });
+
+  it("should presist increased limits properly", async () => {
+    try {
+      const before = web3.utils.toWei("0.2");
+      const after = web3.utils.toWei("0.4");
+      const newLimit = await contract.changeAllowanceLimit(kid1, before, increase);
+
+      truffleAssert.eventEmitted(
+        newLimit,
+        "AllowanceLimitChange",
+        (ev) => ev.newLimit.toString() === after,
+        "Allowance state should get updated to .4 ether"
+      );
+      const newAllowance = await contract.getAllowance(kid1);
+      assert.equal(newAllowance, after);
+    } catch (err) {
+      console.log("error:\n", err);
+      assert(false);
     }
   });
 });
